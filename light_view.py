@@ -53,13 +53,13 @@ class LightView:
         self.port_entry.grid(row=0, column=2, padx=5, pady=10)
         
         # Botões de conexão
-        self.connect_button = ctk.CTkButton(connection_frame, text="Conectar", 
-                                           command=self.connect_arduino, width=100)
-        self.connect_button.grid(row=0, column=3, padx=5, pady=10)
+        self.conectar_button = ctk.CTkButton(connection_frame, text="Conectar", 
+                                           command=self.conectar_arduino, width=100)
+        self.conectar_button.grid(row=0, column=3, padx=5, pady=10)
         
-        self.disconnect_button = ctk.CTkButton(connection_frame, text="Desconectar", 
-                                              command=self.disconnect_arduino, width=100, state="disabled")
-        self.disconnect_button.grid(row=0, column=4, padx=5, pady=10)
+        self.desconectar_button = ctk.CTkButton(connection_frame, text="Desconectar", 
+                                              command=self.desconectar_arduino, width=100, state="disabled")
+        self.desconectar_button.grid(row=0, column=4, padx=5, pady=10)
         
         # Status da conexão
         self.connection_status_label = ctk.CTkLabel(connection_frame, text="Desconectado", 
@@ -103,13 +103,13 @@ class LightView:
             
             # Botão Ligar
             on_button = ctk.CTkButton(setor_frame, text="Ligar", width=60, height=30,
-                                     command=lambda s=setor_id: self.turn_on_light(s),
+                                     command=lambda s=setor_id: self.acender_luz(s),
                                      fg_color="green")
             on_button.grid(row=1, column=0, padx=2, pady=5)
             
             # Botão Desligar
             off_button = ctk.CTkButton(setor_frame, text="Desligar", width=60, height=30,
-                                      command=lambda s=setor_id: self.turn_off_light(s),
+                                      command=lambda s=setor_id: self.desligar_luz(s),
                                       fg_color="red")
             off_button.grid(row=1, column=1, padx=2, pady=5)
             
@@ -153,7 +153,7 @@ class LightView:
         # Atualizar status inicial
         self.atualizar_status()
         
-    def connect_arduino(self):
+    def conectar_arduino(self):
         """Conecta com o Arduino"""
         port = self.port_entry.get().strip()
         if not port:
@@ -162,10 +162,10 @@ class LightView:
             
         self.log_message(f"Tentando conectar na porta {port}...")
         
-        if self.controller.connect_arduino(port):
+        if self.controller.conectar_arduino(port):
             self.connection_status_label.configure(text="Conectado", text_color="green")
-            self.connect_button.configure(state="disabled")
-            self.disconnect_button.configure(state="normal")
+            self.conectar_button.configure(state="disabled")
+            self.desconectar_button.configure(state="normal")
             self.log_message("Conectado com sucesso!")
             messagebox.showinfo("Sucesso", "Conectado ao Arduino!")
         else:
@@ -173,27 +173,27 @@ class LightView:
             self.log_message("Falha na conexão - modo simulação ativo")
             messagebox.showwarning("Aviso", "Não foi possível conectar ao Arduino.\nModo simulação ativado.")
             
-    def disconnect_arduino(self):
+    def desconectar_arduino(self):
         """Desconecta do Arduino"""
-        self.controller.disconnect_arduino()
+        self.controller.desconectar_arduino()
         self.connection_status_label.configure(text="Desconectado", text_color="red")
-        self.connect_button.configure(state="normal")
-        self.disconnect_button.configure(state="disabled")
+        self.conectar_button.configure(state="normal")
+        self.desconectar_button.configure(state="disabled")
         self.log_message("Desconectado do Arduino")
         
-    def turn_on_light(self, setor):
+    def acender_luz(self, setor):
         """Liga uma luz específica"""
-        success = self.controller.turn_on_light(setor)
-        if success:
+        sucesso = self.controller.acender_luz(setor)
+        if sucesso:
             self.status_labels[setor].configure(text="LIGADA", text_color="green")
             self.log_message(f"Luz {self.setor_names[setor]} ligada")
         else:
             self.log_message(f"Erro ao ligar luz {self.setor_names[setor]}")
             
-    def turn_off_light(self, setor):
+    def desligar_luz(self, setor):
         """Desliga uma luz específica"""
-        success = self.controller.turn_off_light(setor)
-        if success:
+        sucesso = self.controller.desligar_luz(setor)
+        if sucesso:
             self.status_labels[setor].configure(text="DESLIGADA", text_color="red")
             self.log_message(f"Luz {self.setor_names[setor]} desligada")
         else:
@@ -201,8 +201,8 @@ class LightView:
             
     def turn_on_all(self):
         """Liga todas as luzes"""
-        success = self.controller.turn_on_all_lights()
-        if success:
+        sucesso = self.controller.ligar_tudo()
+        if sucesso:
             for setor in self.status_labels:
                 self.status_labels[setor].configure(text="LIGADA", text_color="green")
             self.log_message("Todas as luzes ligadas")
@@ -211,8 +211,8 @@ class LightView:
             
     def turn_off_all(self):
         """Desliga todas as luzes"""
-        success = self.controller.turn_off_all_lights()
-        if success:
+        sucesso = self.controller.desligar_tudo()
+        if sucesso:
             for setor in self.status_labels:
                 self.status_labels[setor].configure(text="DESLIGADA", text_color="red")
             self.log_message("Todas as luzes desligadas")
@@ -221,7 +221,7 @@ class LightView:
             
     def atualizar_status(self):
         """Atualiza o status de todas as luzes"""
-        status = self.controller.get_all_status()
+        status = self.controller.verifica_tudo()
         for setor, ligada in status.items():
             if setor in self.status_labels:
                 if ligada:

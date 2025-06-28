@@ -21,7 +21,7 @@ class LightController:
         self.baud_rate = 9600
         self.connected = False
         
-    def connect_arduino(self, port_name=None):
+    def conectar_arduino(self, port_name=None):
         """Conecta com o Arduino via serial"""
         if port_name:
             self.port_name = port_name
@@ -41,14 +41,14 @@ class LightController:
             self.connected = False
             return False
             
-    def disconnect_arduino(self):
+    def desconectar_arduino(self):
         """Desconecta do Arduino"""
         if self.serial_port and self.serial_port.is_open:
             self.serial_port.close()
             self.connected = False
             print("Desconectado do Arduino")
             
-    def send_command(self, command):
+    def enviar_comando(self, command):
         """Envia comando para o Arduino"""
         if not self.connected or not self.serial_port:
             print(f"Simulando envio do comando: {command}")
@@ -63,15 +63,15 @@ class LightController:
             print(f"Erro ao enviar comando: {e}")
             return False
             
-    def toggle_light(self, setor):
+    def alternar_luz(self, setor):
         """Liga ou desliga a luz de um setor específico"""
         if setor not in self.setores:
             print(f"Setor '{setor}' não encontrado")
             return False
             
-        current_status = self.setores[setor]['status']
+        status_atual = self.setores[setor]['status']
         
-        if current_status:
+        if status_atual:
             # Desligar luz
             command = self.setores[setor]['off']
             self.setores[setor]['status'] = False
@@ -82,82 +82,82 @@ class LightController:
             self.setores[setor]['status'] = True
             action = "ligada"
             
-        success = self.send_command(command)
-        if success:
+        sucesso = self.enviar_comando(command)
+        if sucesso:
             print(f"Luz do setor '{setor}' {action}")
             
-        return success
+        return sucesso
         
-    def turn_on_light(self, setor):
+    def acender_luz(self, setor):
         """Liga a luz de um setor específico"""
         if setor not in self.setores:
             print(f"Setor '{setor}' não encontrado")
             return False
             
         command = self.setores[setor]['on']
-        success = self.send_command(command)
+        sucesso = self.enviar_comando(command)
         
-        if success:
+        if sucesso:
             self.setores[setor]['status'] = True
             print(f"Luz do setor '{setor}' ligada")
             
-        return success
+        return sucesso
         
-    def turn_off_light(self, setor):
+    def desligar_luz(self, setor):
         """Desliga a luz de um setor específico"""
         if setor not in self.setores:
             print(f"Setor '{setor}' não encontrado")
             return False
             
         command = self.setores[setor]['off']
-        success = self.send_command(command)
+        sucesso = self.enviar_comando(command)
         
-        if success:
+        if sucesso:
             self.setores[setor]['status'] = False
             print(f"Luz do setor '{setor}' desligada")
             
-        return success
+        return sucesso
         
-    def turn_on_all_lights(self):
+    def ligar_tudo(self):
         """Liga todas as luzes"""
-        success_count = 0
+        sucesso_count = 0
         for setor in self.setores:
-            if self.turn_on_light(setor):
-                success_count += 1
+            if self.acender_luz(setor):
+                sucesso_count += 1
                 
-        print(f"Ligadas {success_count} de {len(self.setores)} luzes")
-        return success_count == len(self.setores)
+        print(f"Ligadas {sucesso_count} de {len(self.setores)} luzes")
+        return sucesso_count == len(self.setores)
         
-    def turn_off_all_lights(self):
+    def desligar_tudo(self):
         """Desliga todas as luzes"""
-        success_count = 0
+        sucesso_count = 0
         for setor in self.setores:
-            if self.turn_off_light(setor):
-                success_count += 1
+            if self.desligar_luz(setor):
+                sucesso_count += 1
                 
-        print(f"Desligadas {success_count} de {len(self.setores)} luzes")
-        return success_count == len(self.setores)
+        print(f"Desligadas {sucesso_count} de {len(self.setores)} luzes")
+        return sucesso_count == len(self.setores)
         
-    def get_light_status(self, setor):
+    def verifica_status(self, setor):
         """Retorna o status de uma luz específica"""
         if setor in self.setores:
             return self.setores[setor]['status']
         return None
         
-    def get_all_status(self):
+    def verifica_tudo(self):
         """Retorna o status de todas as luzes"""
         status = {}
         for setor, config in self.setores.items():
             status[setor] = config['status']
         return status
         
-    def get_available_ports(self):
+    def verifica_portas(self):
         """Retorna lista de portas seriais disponíveis"""
         import serial.tools.list_ports
         ports = serial.tools.list_ports.comports()
         return [port.device for port in ports]
         
-    def test_connection(self):
+    def verifica_conexao(self):
         """Testa a conexão com o Arduino"""
         if not self.connected:
             return False
@@ -165,7 +165,7 @@ class LightController:
         try:
             # Enviar comando de teste (pode ser um comando específico do Arduino)
             test_command = 'T'  # Comando de teste
-            return self.send_command(test_command)
+            return self.enviar_comando(test_command)
         except Exception as e:
             print(f"Erro no teste de conexão: {e}")
             return False
@@ -177,7 +177,7 @@ if __name__ == "__main__":
     print("=== LogiTrack - Controlador de Luzes ===")
     
     # Tentar conectar (vai falhar se não houver Arduino conectado)
-    if controller.connect_arduino():
+    if controller.conectar_arduino():
         print("Arduino conectado com sucesso!")
     else:
         print("Arduino não conectado - modo simulação ativado")
@@ -186,16 +186,16 @@ if __name__ == "__main__":
     print("\nTestando controle de luzes...")
     
     # Ligar luz da oficina
-    controller.turn_on_light('oficina')
+    controller.acender_luz('oficina')
     
     # Ligar luzes do galpão
-    controller.turn_on_light('galpao_bloco1')
-    controller.turn_on_light('galpao_bloco2')
-    controller.turn_on_light('galpao_bloco3')
+    controller.acender_luz('galpao_bloco1')
+    controller.acender_luz('galpao_bloco2')
+    controller.acender_luz('galpao_bloco3')
     
     # Mostrar status
     print("\nStatus atual das luzes:")
-    status = controller.get_all_status()
+    status = controller.verifica_tudo()
     for setor, ligada in status.items():
         print(f"{setor}: {'LIGADA' if ligada else 'DESLIGADA'}")
     
@@ -204,15 +204,15 @@ if __name__ == "__main__":
     
     # Desligar todas as luzes
     print("\nDesligando todas as luzes...")
-    controller.turn_off_all_lights()
+    controller.desligar_tudo()
     
     # Mostrar status final
     print("\nStatus final das luzes:")
-    status = controller.get_all_status()
+    status = controller.verifica_tudo()
     for setor, ligada in status.items():
         print(f"{setor}: {'LIGADA' if ligada else 'DESLIGADA'}")
     
     # Desconectar
-    controller.disconnect_arduino()
+    controller.desconectar_arduino()
     print("\nTeste finalizado.")
 
