@@ -32,7 +32,7 @@ class JanelaCaminhoes:
         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
         ctk.CTkButton(button_frame, text="Criar", command=self.criar_caminhao).grid(row=0, column=0, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_caminhao).grid(row=0, column=1, padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Excluir", command=self.delete_caminhao).grid(row=0, column=2, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_caminhao).grid(row=0, column=2, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
         columns = ("ID", "Marca", "Modelo", "Ano", "Placa", "Quilometragem", "Status")
@@ -80,14 +80,14 @@ class JanelaCaminhoes:
         except Exception as e:
             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-    def delete_caminhao(self):
+    def deletar_caminhao(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showerror("Erro", "Selecione um caminhão para excluir.")
             return
         item = self.tree.item(selected[0])
         id_caminhao = str(item['values'][0])
-        self.crud_obj.delete_caminhao(id_caminhao)
+        self.crud_obj.deletar_caminhao(id_caminhao)
         self.recarregar_lista()
         self.campos_vazios()
         messagebox.showinfo("Sucesso", "Caminhão excluído com sucesso!")
@@ -99,7 +99,7 @@ class JanelaCaminhoes:
     def recarregar_lista(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-        caminhoes = self.crud_obj.list_all_caminhoes()
+        caminhoes = self.crud_obj.listar_todos_caminhoes()
         for caminhao in caminhoes:
             self.tree.insert('', 'end', values=(
                 caminhao['ID_Caminhao'],
@@ -129,7 +129,7 @@ class JanelaCaminhoes:
             self.tree.delete(row)
         
         # Busca todos os caminhões cadastrados
-        caminhoes = self.crud_obj.list_all_caminhoes()
+        caminhoes = self.crud_obj.listar_todos_caminhoes()
         encontrados = []  # Lista para armazenar os caminhões que correspondem à pesquisa
         
         # Para cada caminhão, verifica se o termo pesquisado aparece em qualquer campo

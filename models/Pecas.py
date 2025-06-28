@@ -3,14 +3,14 @@ import os
 class PecasCRUD:
     def __init__(self, filename="pecas.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_pecas(self):
+    def ler_tudo_pecas(self):
         pecas = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -26,7 +26,7 @@ class PecasCRUD:
                     })
         return pecas
 
-    def _write_all_pecas(self, pecas):
+    def digitar_tudo_pecas(self, pecas):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for peca in pecas:
                 linha = ';'.join([
@@ -40,16 +40,16 @@ class PecasCRUD:
                 f.write(linha + '\n')
 
     def gerar_novo_id(self):
-        pecas = self._read_all_pecas()
+        pecas = self.ler_tudo_pecas()
         if not pecas:
             return "1"
         ultimos_ids = [int(p['ID_Peca']) for p in pecas if p['ID_Peca'].isdigit()]
         proximo_num = max(ultimos_ids) + 1 if ultimos_ids else 1
         return str(proximo_num)
 
-    def create_peca(self, nome, descricao, fabricante, preco, quantidade):
+    def criar_peca(self, nome, descricao, fabricante, preco, quantidade):
         id_peca = self.gerar_novo_id()
-        pecas = self._read_all_pecas()
+        pecas = self.ler_tudo_pecas()
         nova_peca = {
             'ID_Peca': id_peca,
             'Nome': nome,
@@ -59,12 +59,12 @@ class PecasCRUD:
             'Quantidade': str(quantidade)
         }
         pecas.append(nova_peca)
-        self._write_all_pecas(pecas)
+        self.digitar_tudo_pecas(pecas)
         print(f"Peça cadastrada com sucesso com ID {id_peca}.")
         return id_peca
 
-    def read_peca(self, id_peca):
-        pecas = self._read_all_pecas()
+    def ler_peca(self, id_peca):
+        pecas = self.ler_tudo_pecas()
         for peca in pecas:
             if peca['ID_Peca'] == id_peca:
                 return peca
@@ -72,7 +72,7 @@ class PecasCRUD:
         return None
 
     def atualizar_peca(self, id_peca, nome=None, descricao=None, fabricante=None, preco=None, quantidade=None):
-        pecas = self._read_all_pecas()
+        pecas = self.ler_tudo_pecas()
         found = False
         for i, peca in enumerate(pecas):
             if peca['ID_Peca'] == id_peca:
@@ -84,22 +84,22 @@ class PecasCRUD:
                 found = True
                 break
         if found:
-            self._write_all_pecas(pecas)
+            self.digitar_tudo_pecas(pecas)
             print(f"Peça com ID {id_peca} atualizada com sucesso.")
             return True
         else:
             print(f"Peça com ID {id_peca} não encontrada para atualização.")
             return False
 
-    def delete_peca(self, id_peca):
-        pecas = self._read_all_pecas()
+    def deletar_peca(self, id_peca):
+        pecas = self.ler_tudo_pecas()
         novas_pecas = [p for p in pecas if p['ID_Peca'] != id_peca]
         if len(novas_pecas) == len(pecas):
             print(f"Peça com ID {id_peca} não encontrada para exclusão.")
             return False
-        self._write_all_pecas(novas_pecas)
+        self.digitar_tudo_pecas(novas_pecas)
         print(f"Peça com ID {id_peca} excluída com sucesso.")
         return True
 
-    def list_all_pecas(self):
-        return self._read_all_pecas()
+    def listar_todos_pecas(self):
+        return self.ler_tudo_pecas()

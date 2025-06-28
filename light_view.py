@@ -27,7 +27,7 @@ class LightView:
             'area_externa': 'Área Externa'
         }
         
-    def create_light_frame(self):
+    def criar_light_frame(self):
         if self.light_frame:
             self.light_frame.destroy()
             

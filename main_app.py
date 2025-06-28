@@ -11,12 +11,12 @@ class App(ctk.CTk):
         self.title("LogiTrack: Gestão de Transportes")
         self.geometry("1200x700")
 
-        # Configure grid layout (4x4)
+        # Configurar o layout do grid (4x4)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure((2, 3), weight=0)
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
-        # Create sidebar frame with widgets
+        # Criar o frame da barra lateral com widgets
         self.sidebar_frame = ctk.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
@@ -86,11 +86,11 @@ class App(ctk.CTk):
 
     def mostrar_sensors(self):
         self.limpar_main()
-        self.sensor_view.create_sensor_frame()
+        self.sensor_view.criar_sensor_frame()
 
     def mostrar_luzes(self):
         self.limpar_main()
-        self.light_view.create_light_frame()
+        self.light_view.criar_light_frame()
 
     # def mostrar_caminhoes(self):
     #     self.limpar_main()
@@ -104,15 +104,15 @@ class App(ctk.CTk):
 # class ClientesCRUD:
 #     def __init__(self, filename="clientes.txt"):
 #         self.filename = filename
-#         self._create_file_if_not_exists()
+#         self.criar_arquivo_caso_nao_exista()
 
-#     def _create_file_if_not_exists(self):
+#     def criar_arquivo_caso_nao_exista(self):
 #         import os
 #         if not os.path.exists(self.filename):
 #             with open(self.filename, 'w', encoding='utf-8') as f:
 #                 pass
 
-#     def _read_all_clientes(self):
+#     def ler_tudo_clientes(self):
 #         clientes = []
 #         with open(self.filename, 'r', encoding='utf-8') as f:
 #             for line in f:
@@ -131,7 +131,7 @@ class App(ctk.CTk):
 #                     })
 #         return clientes
 
-#     def _write_all_clientes(self, clientes):
+#     def digitar_tudo_clientes(self, clientes):
 #         with open(self.filename, 'w', encoding='utf-8') as f:
 #             for cliente in clientes:
 #                 linha = ';'.join([
@@ -147,8 +147,8 @@ class App(ctk.CTk):
 #                 ])
 #                 f.write(linha + '\n')
 
-#     def create_cliente(self, id_cliente, nome, contato, rua, bairro, cidade, estado, telefone, email):
-#         clientes = self._read_all_clientes()
+#     def criar_cliente(self, id_cliente, nome, contato, rua, bairro, cidade, estado, telefone, email):
+#         clientes = self.ler_tudo_clientes()
 #         for cliente in clientes:
 #             if cliente['ID_Cliente'] == id_cliente:
 #                 print(f"Cliente com ID {id_cliente} já existe.")
@@ -165,12 +165,12 @@ class App(ctk.CTk):
 #             'Email': email
 #         }
 #         clientes.append(novo_cliente)
-#         self._write_all_clientes(clientes)
+#         self.digitar_tudo_clientes(clientes)
 #         print(f"Cliente {nome} cadastrado com sucesso.")
 #         return True
 
-#     def read_cliente(self, id_cliente):
-#         clientes = self._read_all_clientes()
+#     def ler_cliente(self, id_cliente):
+#         clientes = self.ler_tudo_clientes()
 #         for cliente in clientes:
 #             if cliente['ID_Cliente'] == id_cliente:
 #                 return cliente
@@ -178,7 +178,7 @@ class App(ctk.CTk):
 #         return None
 
 #     def atualizar_cliente(self, id_cliente, nome=None, contato=None, rua=None, bairro=None, cidade=None, estado=None, telefone=None, email=None):
-#         clientes = self._read_all_clientes()
+#         clientes = self.ler_tudo_clientes()
 #         found = False
 #         for i, cliente in enumerate(clientes):
 #             if cliente['ID_Cliente'] == id_cliente:
@@ -193,25 +193,25 @@ class App(ctk.CTk):
 #                 found = True
 #                 break
 #         if found:
-#             self._write_all_clientes(clientes)
+#             self.digitar_tudo_clientes(clientes)
 #             print(f"Cliente com ID {id_cliente} atualizado com sucesso.")
 #             return True
 #         else:
 #             print(f"Cliente com ID {id_cliente} não encontrado para atualização.")
 #             return False
 
-#     def delete_cliente(self, id_cliente):
-#         clientes = self._read_all_clientes()
+#     def deletar_cliente(self, id_cliente):
+#         clientes = self.ler_tudo_clientes()
 #         novos_clientes = [c for c in clientes if c['ID_Cliente'] != id_cliente]
 #         if len(novos_clientes) == len(clientes):
 #             print(f"Cliente com ID {id_cliente} não encontrado para exclusão.")
 #             return False
-#         self._write_all_clientes(novos_clientes)
+#         self.digitar_tudo_clientes(novos_clientes)
 #         print(f"Cliente com ID {id_cliente} excluído com sucesso.")
 #         return True
 
-#     def list_all_clientes(self):
-#         return self._read_all_clientes()
+#     def listar_todos_clientes(self):
+#         return self.ler_tudo_clientes()
 
 # class JanelaCaminhoes:
 #     def __init__(self, parent, crud_obj):

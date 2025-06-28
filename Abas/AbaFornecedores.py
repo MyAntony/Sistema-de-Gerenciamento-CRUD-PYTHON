@@ -30,9 +30,9 @@ class JanelaFornecedores:
 
         button_frame = ctk.CTkFrame(self.window)
         button_frame.grid(row=6, column=0, columnspan=4, padx=20, pady=20)
-        ctk.CTkButton(button_frame, text="Criar", command=self.create_fornecedor).grid(row=0, column=0, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Criar", command=self.criar_fornecedor).grid(row=0, column=0, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_fornecedor).grid(row=0, column=1, padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Excluir", command=self.delete_fornecedor).grid(row=0, column=2, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_fornecedor).grid(row=0, column=2, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
         columns = ("ID", "Nome", "Contato", "Rua", "Bairro", "Cidade", "Estado", "Telefone", "Email")
@@ -43,13 +43,13 @@ class JanelaFornecedores:
         self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-    def create_fornecedor(self):
+    def criar_fornecedor(self):
         try:
             values = [e.get() for e in self.entries]
             if not values[0] or not values[1]:
                 messagebox.showerror("Erro", "Nome e Contato são obrigatórios.")
                 return
-            id_fornecedor = self.crud_obj.create_fornecedor(*values)
+            id_fornecedor = self.crud_obj.criar_fornecedor(*values)
             self.recarregar_lista()
             self.campos_vazios()
             messagebox.showinfo("Sucesso", f"Fornecedor cadastrado com sucesso! ID: {id_fornecedor}")
@@ -82,14 +82,14 @@ class JanelaFornecedores:
         except Exception as e:
             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-    def delete_fornecedor(self):
+    def deletar_fornecedor(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showerror("Erro", "Selecione um fornecedor para excluir.")
             return
         item = self.tree.item(selected[0])
         id_fornecedor = str(item['values'][0])
-        self.crud_obj.delete_fornecedor(id_fornecedor)
+        self.crud_obj.deletar_fornecedor(id_fornecedor)
         self.recarregar_lista()
         self.campos_vazios()
         messagebox.showinfo("Sucesso", "Fornecedor excluído com sucesso!")
@@ -101,7 +101,7 @@ class JanelaFornecedores:
     def recarregar_lista(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-        fornecedores = self.crud_obj.list_all_fornecedores()
+        fornecedores = self.crud_obj.listar_todos_fornecedores()
         for fornecedor in fornecedores:
             self.tree.insert('', 'end', values=(
                 fornecedor['ID_Fornecedor'],
@@ -128,7 +128,7 @@ class JanelaFornecedores:
         termo = self.search_entry.get().lower()
         for row in self.tree.get_children():
             self.tree.delete(row)
-        fornecedores = self.crud_obj.list_all_fornecedores()
+        fornecedores = self.crud_obj.listar_todos_fornecedores()
         encontrados = []
         for fornecedor in fornecedores:
             if any(termo in str(valor).lower() for valor in fornecedor.values()):

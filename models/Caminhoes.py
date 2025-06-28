@@ -3,14 +3,14 @@ import os
 class CaminhoesCRUD:
     def __init__(self, filename="caminhoes.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_caminhoes(self):
+    def ler_tudo_caminhoes(self):
         caminhoes = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -28,7 +28,7 @@ class CaminhoesCRUD:
                         })
         return caminhoes
 
-    def _write_all_caminhoes(self, caminhoes):
+    def digitar_tudo_caminhoes(self, caminhoes):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for caminhao in caminhoes:
                 linha = ';'.join([
@@ -43,7 +43,7 @@ class CaminhoesCRUD:
                 f.write(linha + '\n')
 
     def gerar_novo_id(self):
-        caminhoes = self._read_all_caminhoes()
+        caminhoes = self.ler_tudo_caminhoes()
         if not caminhoes:
             return "1"
         ultimos_ids = [int(c['ID_Caminhao']) for c in caminhoes if c['ID_Caminhao'].isdigit()]
@@ -52,7 +52,7 @@ class CaminhoesCRUD:
 
     def criar_caminhao(self, marca, modelo, ano, placa, quilometragem, status):
         id_caminhao = self.gerar_novo_id()
-        caminhoes = self._read_all_caminhoes()
+        caminhoes = self.ler_tudo_caminhoes()
         novo_caminhao = {
             'ID_Caminhao': id_caminhao,
             'Marca': marca,
@@ -63,12 +63,12 @@ class CaminhoesCRUD:
             'Status': status
         }
         caminhoes.append(novo_caminhao)
-        self._write_all_caminhoes(caminhoes)
+        self.digitar_tudo_caminhoes(caminhoes)
         print(f"Caminhão cadastrado com sucesso com ID {id_caminhao}.")
         return id_caminhao
 
-    def read_caminhao(self, id_caminhao):
-        caminhoes = self._read_all_caminhoes()
+    def ler_caminhao(self, id_caminhao):
+        caminhoes = self.ler_tudo_caminhoes()
         for caminhao in caminhoes:
             if caminhao['ID_Caminhao'] == id_caminhao:
                 return caminhao
@@ -76,7 +76,7 @@ class CaminhoesCRUD:
         return None
 
     def atualizar_caminhao(self, id_caminhao, marca=None, modelo=None, ano=None, placa=None, quilometragem=None, status=None):
-        caminhoes = self._read_all_caminhoes()
+        caminhoes = self.ler_tudo_caminhoes()
         found = False
         for i, caminhao in enumerate(caminhoes):
             if caminhao['ID_Caminhao'] == id_caminhao:
@@ -89,22 +89,22 @@ class CaminhoesCRUD:
                 found = True
                 break
         if found:
-            self._write_all_caminhoes(caminhoes)
+            self.digitar_tudo_caminhoes(caminhoes)
             print(f"Caminhão com ID {id_caminhao} atualizado com sucesso.")
             return True
         else:
             print(f"Caminhão com ID {id_caminhao} não encontrado para atualização.")
             return False
 
-    def delete_caminhao(self, id_caminhao):
-        caminhoes = self._read_all_caminhoes()
+    def deletar_caminhao(self, id_caminhao):
+        caminhoes = self.ler_tudo_caminhoes()
         novos_caminhoes = [c for c in caminhoes if c['ID_Caminhao'] != id_caminhao]
         if len(novos_caminhoes) == len(caminhoes):
             print(f"Caminhão com ID {id_caminhao} não encontrado para exclusão.")
             return False
-        self._write_all_caminhoes(novos_caminhoes)
+        self.digitar_tudo_caminhoes(novos_caminhoes)
         print(f"Caminhão com ID {id_caminhao} excluído com sucesso.")
         return True
 
-    def list_all_caminhoes(self):
-        return self._read_all_caminhoes()
+    def listar_todos_caminhoes(self):
+        return self.ler_tudo_caminhoes()

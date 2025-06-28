@@ -30,9 +30,9 @@ class JanelaPecas:
 
         button_frame = ctk.CTkFrame(self.window)
         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
-        ctk.CTkButton(button_frame, text="Criar", command=self.create_peca).grid(row=0, column=0, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Criar", command=self.criar_peca).grid(row=0, column=0, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_peca).grid(row=0, column=1, padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Excluir", command=self.delete_peca).grid(row=0, column=2, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_peca).grid(row=0, column=2, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
         columns = ("ID", "Nome", "Descrição", "Fabricante", "Preço", "Quantidade")
@@ -43,13 +43,13 @@ class JanelaPecas:
         self.tree.grid(row=6, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-    def create_peca(self):
+    def criar_peca(self):
         try:
             values = [e.get() for e in self.entries]
             if not values[0] or not values[1]:
                 messagebox.showerror("Erro", "Nome e Descrição são obrigatórios.")
                 return
-            id_peca = self.crud_obj.create_peca(*values)
+            id_peca = self.crud_obj.criar_peca(*values)
             self.recarregar_lista()
             self.campos_vazios()
             messagebox.showinfo("Sucesso", f"Peça cadastrada com sucesso! ID: {id_peca}")
@@ -79,14 +79,14 @@ class JanelaPecas:
         except Exception as e:
             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-    def delete_peca(self):
+    def deletar_peca(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showerror("Erro", "Selecione uma peça para excluir.")
             return
         item = self.tree.item(selected[0])
         id_peca = str(item['values'][0])
-        self.crud_obj.delete_peca(id_peca)
+        self.crud_obj.deletar_peca(id_peca)
         self.recarregar_lista()
         self.campos_vazios()
         messagebox.showinfo("Sucesso", "Peça excluída com sucesso!")
@@ -98,7 +98,7 @@ class JanelaPecas:
     def recarregar_lista(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-        pecas = self.crud_obj.list_all_pecas()
+        pecas = self.crud_obj.listar_todos_pecas()
         for peca in pecas:
             self.tree.insert('', 'end', values=(
                 peca['ID_Peca'],
@@ -125,7 +125,7 @@ class JanelaPecas:
         for row in self.tree.get_children():
             self.tree.delete(row)
         # Busca todas as peças cadastradas
-        pecas = self.crud_obj.list_all_pecas()
+        pecas = self.crud_obj.listar_todos_pecas()
         encontrados = []  # Lista para armazenar as peças encontradas
         # Para cada peça, verifica se o termo pesquisado aparece em qualquer campo
         for peca in pecas:

@@ -32,9 +32,9 @@ class JanelaClientes:
 
         button_frame = ctk.CTkFrame(self.window)
         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
-        ctk.CTkButton(button_frame, text="Criar", command=self.create_cliente).grid(row=0, column=0, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Criar", command=self.criar_cliente).grid(row=0, column=0, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_cliente).grid(row=0, column=1, padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Excluir", command=self.delete_cliente).grid(row=0, column=2, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_cliente).grid(row=0, column=2, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
         columns = ("ID", "Nome", "Contato", "Rua", "Bairro", "Cidade", "Estado", "Telefone", "Email")
@@ -45,13 +45,13 @@ class JanelaClientes:
         self.tree.grid(row=6, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-    def create_cliente(self):
+    def criar_cliente(self):
         try:
             values = [e.get() for e in self.entries]
             if not values[0]:
                 messagebox.showerror("Erro", "Nome é obrigatório.")
                 return
-            id_cliente = self.crud_obj.create_cliente(*values)
+            id_cliente = self.crud_obj.criar_cliente(*values)
             self.recarregar_lista()
             self.campos_vazios()
             messagebox.showinfo("Sucesso", f"Cliente cadastrado com sucesso! ID: {id_cliente}")
@@ -84,14 +84,14 @@ class JanelaClientes:
         except Exception as e:
             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-    def delete_cliente(self):
+    def deletar_cliente(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showerror("Erro", "Selecione um cliente para excluir.")
             return
         item = self.tree.item(selected[0])
         id_cliente = str(item['values'][0])  # <-- conversão para string
-        self.crud_obj.delete_cliente(id_cliente)
+        self.crud_obj.deletar_cliente(id_cliente)
         self.recarregar_lista()
         self.campos_vazios()
         messagebox.showinfo("Sucesso", "Cliente excluído com sucesso!")
@@ -103,7 +103,7 @@ class JanelaClientes:
     def recarregar_lista(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-        clientes = self.crud_obj.list_all_clientes()
+        clientes = self.crud_obj.listar_todos_clientes()
         for cliente in clientes:
             self.tree.insert('', 'end', values=(
                 cliente['ID_Cliente'],
@@ -122,7 +122,7 @@ class JanelaClientes:
         print(f"Termo pesquisado: '{termo}'")
         for row in self.tree.get_children():
             self.tree.delete(row)
-        clientes = self.crud_obj.list_all_clientes()
+        clientes = self.crud_obj.listar_todos_clientes()
         encontrados = []
         for cliente in clientes:
             print(cliente)  # Veja o que está sendo lido

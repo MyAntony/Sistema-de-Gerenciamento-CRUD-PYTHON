@@ -3,14 +3,14 @@ import os
 class FuncionariosCRUD:
     def __init__(self, filename="funcionarios.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_funcionarios(self):
+    def ler_tudo_funcionarios(self):
         funcionarios = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -29,7 +29,7 @@ class FuncionariosCRUD:
                     })
         return funcionarios
 
-    def _write_all_funcionarios(self, funcionarios):
+    def digitar_tudo_funcionarios(self, funcionarios):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for funcionario in funcionarios:
                 linha = ';'.join([
@@ -46,16 +46,16 @@ class FuncionariosCRUD:
                 f.write(linha + '\n')
 
     def gerar_novo_id(self):
-        funcionarios = self._read_all_funcionarios()
+        funcionarios = self.ler_tudo_funcionarios()
         if not funcionarios:
             return "1"
         ultimos_ids = [int(f['ID_Funcionario']) for f in funcionarios if f['ID_Funcionario'].isdigit()]
         proximo_num = max(ultimos_ids) + 1 if ultimos_ids else 1
         return str(proximo_num)
 
-    def create_funcionario(self, nome, cargo, telefone, email, rua, bairro, cidade, estado):
+    def criar_funcionario(self, nome, cargo, telefone, email, rua, bairro, cidade, estado):
         id_funcionario = self.gerar_novo_id()
-        funcionarios = self._read_all_funcionarios()
+        funcionarios = self.ler_tudo_funcionarios()
         novo_funcionario = {
             'ID_Funcionario': id_funcionario,
             'Nome': nome,
@@ -68,12 +68,12 @@ class FuncionariosCRUD:
             'Endereco_Estado': estado
         }
         funcionarios.append(novo_funcionario)
-        self._write_all_funcionarios(funcionarios)
+        self.digitar_tudo_funcionarios(funcionarios)
         print(f"Funcionário cadastrado com sucesso com ID {id_funcionario}.")
         return id_funcionario
 
-    def read_funcionario(self, id_funcionario):
-        funcionarios = self._read_all_funcionarios()
+    def ler_funcionario(self, id_funcionario):
+        funcionarios = self.ler_tudo_funcionarios()
         for funcionario in funcionarios:
             if funcionario['ID_Funcionario'] == id_funcionario:
                 return funcionario
@@ -81,7 +81,7 @@ class FuncionariosCRUD:
         return None
 
     def atualizar_funcionario(self, id_funcionario, nome=None, cargo=None, telefone=None, email=None, rua=None, bairro=None, cidade=None, estado=None):
-        funcionarios = self._read_all_funcionarios()
+        funcionarios = self.ler_tudo_funcionarios()
         found = False
         for i, funcionario in enumerate(funcionarios):
             if funcionario['ID_Funcionario'] == id_funcionario:
@@ -96,22 +96,22 @@ class FuncionariosCRUD:
                 found = True
                 break
         if found:
-            self._write_all_funcionarios(funcionarios)
+            self.digitar_tudo_funcionarios(funcionarios)
             print(f"Funcionário com ID {id_funcionario} atualizado com sucesso.")
             return True
         else:
             print(f"Funcionário com ID {id_funcionario} não encontrado para atualização.")
             return False
 
-    def delete_funcionario(self, id_funcionario):
-        funcionarios = self._read_all_funcionarios()
+    def deletar_funcionario(self, id_funcionario):
+        funcionarios = self.ler_tudo_funcionarios()
         novos_funcionarios = [f for f in funcionarios if f['ID_Funcionario'] != id_funcionario]
         if len(novos_funcionarios) == len(funcionarios):
             print(f"Funcionário com ID {id_funcionario} não encontrado para exclusão.")
             return False
-        self._write_all_funcionarios(novos_funcionarios)
+        self.digitar_tudo_funcionarios(novos_funcionarios)
         print(f"Funcionário com ID {id_funcionario} excluído com sucesso.")
         return True
 
-    def list_all_funcionarios(self):
-        return self._read_all_funcionarios()
+    def listar_todos_funcionarios(self):
+        return self.ler_tudo_funcionarios()

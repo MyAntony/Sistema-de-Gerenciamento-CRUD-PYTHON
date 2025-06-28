@@ -30,9 +30,9 @@ class JanelaFuncionarios:
 
         button_frame = ctk.CTkFrame(self.window)
         button_frame.grid(row=6, column=0, columnspan=4, padx=20, pady=20)
-        ctk.CTkButton(button_frame, text="Criar", command=self.create_funcionario).grid(row=0, column=0, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Criar", command=self.criar_funcionario).grid(row=0, column=0, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_funcionario).grid(row=0, column=1, padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Excluir", command=self.delete_funcionario).grid(row=0, column=2, padx=10, pady=5)
+        ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_funcionario).grid(row=0, column=2, padx=10, pady=5)
         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
         columns = ("ID", "Nome", "Cargo", "Telefone", "Email", "Rua", "Bairro", "Cidade", "Estado")
@@ -43,13 +43,13 @@ class JanelaFuncionarios:
         self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-    def create_funcionario(self):
+    def criar_funcionario(self):
         try:
             values = [e.get() for e in self.entries]
             if not values[0] or not values[1]:
                 messagebox.showerror("Erro", "Nome e Cargo são obrigatórios.")
                 return
-            id_funcionario = self.crud_obj.create_funcionario(*values)
+            id_funcionario = self.crud_obj.criar_funcionario(*values)
             self.recarregar_lista()
             self.campos_vazios()
             messagebox.showinfo("Sucesso", f"Funcionário cadastrado com sucesso! ID: {id_funcionario}")
@@ -82,14 +82,14 @@ class JanelaFuncionarios:
         except Exception as e:
             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-    def delete_funcionario(self):
+    def deletar_funcionario(self):
         selected = self.tree.selection()
         if not selected:
             messagebox.showerror("Erro", "Selecione um funcionário para excluir.")
             return
         item = self.tree.item(selected[0])
         id_funcionario = str(item['values'][0])  # <-- conversão para string
-        self.crud_obj.delete_funcionario(id_funcionario)
+        self.crud_obj.deletar_funcionario(id_funcionario)
         self.recarregar_lista()
         self.campos_vazios()
         messagebox.showinfo("Sucesso", "Funcionário excluído com sucesso!")
@@ -101,7 +101,7 @@ class JanelaFuncionarios:
     def recarregar_lista(self):
         for row in self.tree.get_children():
             self.tree.delete(row)
-        funcionarios = self.crud_obj.list_all_funcionarios()
+        funcionarios = self.crud_obj.listar_todos_funcionarios()
         for funcionario in funcionarios:
             self.tree.insert('', 'end', values=(
                 funcionario['ID_Funcionario'],
@@ -131,7 +131,7 @@ class JanelaFuncionarios:
         for row in self.tree.get_children():
             self.tree.delete(row)
         # Busca todos os funcionários cadastrados
-        funcionarios = self.crud_obj.list_all_funcionarios()
+        funcionarios = self.crud_obj.listar_todos_funcionarios()
         encontrados = []  # Lista para armazenar os funcionários encontrados
         # Para cada funcionário, verifica se o termo pesquisado aparece em qualquer campo
         for funcionario in funcionarios:

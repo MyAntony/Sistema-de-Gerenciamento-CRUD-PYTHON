@@ -3,14 +3,14 @@ import os
 class ClientesCRUD:
     def __init__(self, filename="clientes.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_clientes(self):
+    def ler_tudo_clientes(self):
         clientes = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -29,7 +29,7 @@ class ClientesCRUD:
                     })
         return clientes
 
-    def _write_all_clientes(self, clientes):
+    def digitar_tudo_clientes(self, clientes):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for cliente in clientes:
                 linha = ';'.join([
@@ -46,16 +46,16 @@ class ClientesCRUD:
                 f.write(linha + '\n')
 
     def gerar_novo_id(self):
-        clientes = self._read_all_clientes()
+        clientes = self.ler_tudo_clientes()
         if not clientes:
             return "1"
         ultimos_ids = [int(c['ID_Cliente']) for c in clientes if c['ID_Cliente'].isdigit()]
         proximo_num = max(ultimos_ids) + 1 if ultimos_ids else 1
         return str(proximo_num)
 
-    def create_cliente(self, nome, contato, rua, bairro, cidade, estado, telefone, email):
+    def criar_cliente(self, nome, contato, rua, bairro, cidade, estado, telefone, email):
         id_cliente = self.gerar_novo_id()
-        clientes = self._read_all_clientes()
+        clientes = self.ler_tudo_clientes()
         novo_cliente = {
             'ID_Cliente': id_cliente,
             'Nome': nome,
@@ -68,12 +68,12 @@ class ClientesCRUD:
             'Email': email
         }
         clientes.append(novo_cliente)
-        self._write_all_clientes(clientes)
+        self.digitar_tudo_clientes(clientes)
         print(f"Cliente {nome} cadastrado com sucesso com ID {id_cliente}.")
         return id_cliente
 
-    def read_cliente(self, id_cliente):
-        clientes = self._read_all_clientes()
+    def ler_cliente(self, id_cliente):
+        clientes = self.ler_tudo_clientes()
         for cliente in clientes:
             if cliente['ID_Cliente'] == id_cliente:
                 return cliente
@@ -81,7 +81,7 @@ class ClientesCRUD:
         return None
 
     def atualizar_cliente(self, id_cliente, nome=None, contato=None, rua=None, bairro=None, cidade=None, estado=None, telefone=None, email=None):
-        clientes = self._read_all_clientes()
+        clientes = self.ler_tudo_clientes()
         found = False
         for i, cliente in enumerate(clientes):
             if cliente['ID_Cliente'] == id_cliente:
@@ -96,36 +96,36 @@ class ClientesCRUD:
                 found = True
                 break
         if found:
-            self._write_all_clientes(clientes)
+            self.digitar_tudo_clientes(clientes)
             print(f"Cliente com ID {id_cliente} atualizado com sucesso.")
             return True
         else:
             print(f"Cliente com ID {id_cliente} não encontrado para atualização.")
             return False
 
-    def delete_cliente(self, id_cliente):
-        clientes = self._read_all_clientes()
+    def deletar_cliente(self, id_cliente):
+        clientes = self.ler_tudo_clientes()
         novos_clientes = [c for c in clientes if c['ID_Cliente'] != id_cliente]
         if len(novos_clientes) == len(clientes):
             print(f"Cliente com ID {id_cliente} não encontrado para exclusão.")
             return False
-        self._write_all_clientes(novos_clientes)
+        self.digitar_tudo_clientes(novos_clientes)
         print(f"Cliente com ID {id_cliente} excluído com sucesso.")
         return True
 
-    def list_all_clientes(self):
-        return self._read_all_clientes()
+    def listar_todos_clientes(self):
+        return self.ler_tudo_clientes()
 class SaidasCaminhoesCRUD:
     def __init__(self, filename="saidas.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_saidas(self):
+    def ler_tudo_saidas(self):
         saidas = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -141,7 +141,7 @@ class SaidasCaminhoesCRUD:
                     })
         return saidas
 
-    def _write_all_saidas(self, saidas):
+    def digitar_tudo_saidas(self, saidas):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for saida in saidas:
                 linha = ';'.join([
@@ -154,8 +154,8 @@ class SaidasCaminhoesCRUD:
                 ])
                 f.write(linha + '\n')
 
-    def create_saida(self, id_saida, id_caminhao, id_cliente, data_saida, destino, motorista):
-        saidas = self._read_all_saidas()
+    def criar_saida(self, id_saida, id_caminhao, id_cliente, data_saida, destino, motorista):
+        saidas = self.ler_tudo_saidas()
         for saida in saidas:
             if saida['ID_Saida'] == id_saida:
                 print(f"Saída com ID {id_saida} já existe.")
@@ -169,12 +169,12 @@ class SaidasCaminhoesCRUD:
             'Motorista': motorista
         }
         saidas.append(nova_saida)
-        self._write_all_saidas(saidas)
+        self.digitar_tudo_saidas(saidas)
         print(f"Saída {id_saida} cadastrada com sucesso.")
         return True
 
-    def read_saida(self, id_saida):
-        saidas = self._read_all_saidas()
+    def ler_saida(self, id_saida):
+        saidas = self.ler_tudo_saidas()
         for saida in saidas:
             if saida['ID_Saida'] == id_saida:
                 return saida
@@ -182,7 +182,7 @@ class SaidasCaminhoesCRUD:
         return None
 
     def atualizar_saida(self, id_saida, id_caminhao=None, id_cliente=None, data_saida=None, destino=None, motorista=None):
-        saidas = self._read_all_saidas()
+        saidas = self.ler_tudo_saidas()
         found = False
         for i, saida in enumerate(saidas):
             if saida['ID_Saida'] == id_saida:
@@ -194,22 +194,22 @@ class SaidasCaminhoesCRUD:
                 found = True
                 break
         if found:
-            self._write_all_saidas(saidas)
+            self.digitar_tudo_saidas(saidas)
             print(f"Saída com ID {id_saida} atualizada com sucesso.")
             return True
         else:
             print(f"Saída com ID {id_saida} não encontrada para atualização.")
             return False
 
-    def delete_saida(self, id_saida):
-        saidas = self._read_all_saidas()
+    def deletar_saida(self, id_saida):
+        saidas = self.ler_tudo_saidas()
         novas_saidas = [s for s in saidas if s['ID_Saida'] != id_saida]
         if len(novas_saidas) == len(saidas):
             print(f"Saída com ID {id_saida} não encontrada para exclusão.")
             return False
-        self._write_all_saidas(novas_saidas)
+        self.digitar_tudo_saidas(novas_saidas)
         print(f"Saída com ID {id_saida} excluída com sucesso.")
         return True
 
-    def list_all_saidas(self):
-        return self._read_all_saidas()
+    def listar_todos_saidas(self):
+        return self.ler_tudo_saidas()

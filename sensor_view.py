@@ -16,7 +16,7 @@ class SensorView:
         self.data_labels = {}
         self.status_labels = {}
         
-    def create_sensor_frame(self):
+    def criar_sensor_frame(self):
         if self.sensor_frame:
             self.sensor_frame.destroy()
             

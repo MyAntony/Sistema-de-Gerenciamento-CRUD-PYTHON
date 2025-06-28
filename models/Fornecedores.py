@@ -3,14 +3,14 @@ import os
 class FornecedoresCRUD:
     def __init__(self, filename="fornecedores.txt"):
         self.filename = filename
-        self._create_file_if_not_exists()
+        self.criar_arquivo_caso_nao_exista()
 
-    def _create_file_if_not_exists(self):
+    def criar_arquivo_caso_nao_exista(self):
         if not os.path.exists(self.filename):
             with open(self.filename, 'w', encoding='utf-8') as f:
                 pass
 
-    def _read_all_fornecedores(self):
+    def ler_tudo_fornecedores(self):
         fornecedores = []
         with open(self.filename, 'r', encoding='utf-8') as f:
             for line in f:
@@ -29,7 +29,7 @@ class FornecedoresCRUD:
                     })
         return fornecedores
 
-    def _write_all_fornecedores(self, fornecedores):
+    def digitar_tudo_fornecedores(self, fornecedores):
         with open(self.filename, 'w', encoding='utf-8') as f:
             for fornecedor in fornecedores:
                 linha = ';'.join([
@@ -46,16 +46,16 @@ class FornecedoresCRUD:
                 f.write(linha + '\n')
 
     def gerar_novo_id(self):
-        fornecedores = self._read_all_fornecedores()
+        fornecedores = self.ler_tudo_fornecedores()
         if not fornecedores:
             return "1"
         ultimos_ids = [int(f['ID_Fornecedor']) for f in fornecedores if f['ID_Fornecedor'].isdigit()]
         proximo_num = max(ultimos_ids) + 1 if ultimos_ids else 1
         return str(proximo_num)
 
-    def create_fornecedor(self, nome, contato, rua, bairro, cidade, estado, telefone, email):
+    def criar_fornecedor(self, nome, contato, rua, bairro, cidade, estado, telefone, email):
         id_fornecedor = self.gerar_novo_id()
-        fornecedores = self._read_all_fornecedores()
+        fornecedores = self.ler_tudo_fornecedores()
         novo_fornecedor = {
             'ID_Fornecedor': id_fornecedor,
             'Nome': nome,
@@ -68,12 +68,12 @@ class FornecedoresCRUD:
             'Email': email
         }
         fornecedores.append(novo_fornecedor)
-        self._write_all_fornecedores(fornecedores)
+        self.digitar_tudo_fornecedores(fornecedores)
         print(f"Fornecedor cadastrado com sucesso com ID {id_fornecedor}.")
         return id_fornecedor
 
-    def read_fornecedor(self, id_fornecedor):
-        fornecedores = self._read_all_fornecedores()
+    def ler_fornecedor(self, id_fornecedor):
+        fornecedores = self.ler_tudo_fornecedores()
         for fornecedor in fornecedores:
             if fornecedor['ID_Fornecedor'] == id_fornecedor:
                 return fornecedor
@@ -81,7 +81,7 @@ class FornecedoresCRUD:
         return None
 
     def atualizar_fornecedor(self, id_fornecedor, new_nome=None, new_contato=None, new_endereco_rua=None, new_endereco_bairro=None, new_endereco_cidade=None, new_endereco_estado=None, new_telefone=None, new_email=None):
-        fornecedores = self._read_all_fornecedores()
+        fornecedores = self.ler_tudo_fornecedores()
         found = False
         for i, fornecedor in enumerate(fornecedores):
             if fornecedor['ID_Fornecedor'] == id_fornecedor:
@@ -96,24 +96,24 @@ class FornecedoresCRUD:
                 found = True
                 break
         if found:
-            self._write_all_fornecedores(fornecedores)
+            self.digitar_tudo_fornecedores(fornecedores)
             print(f"Fornecedor com ID {id_fornecedor} atualizado com sucesso.")
             return True
         else:
             print(f"Fornecedor com ID {id_fornecedor} não encontrado para atualização.")
             return False
 
-    def delete_fornecedor(self, id_fornecedor):
-        fornecedores = self._read_all_fornecedores()
+    def deletar_fornecedor(self, id_fornecedor):
+        fornecedores = self.ler_tudo_fornecedores()
         initial_len = len(fornecedores)
         fornecedores = [fornecedor for fornecedor in fornecedores if fornecedor['ID_Fornecedor'] != id_fornecedor]
         if len(fornecedores) < initial_len:
-            self._write_all_fornecedores(fornecedores)
+            self.digitar_tudo_fornecedores(fornecedores)
             print(f"Fornecedor com ID {id_fornecedor} excluído com sucesso.")
             return True
         else:
             print(f"Fornecedor com ID {id_fornecedor} não encontrado para exclusão.")
             return False
 
-    def list_all_fornecedores(self):
-        return self._read_all_fornecedores()
+    def listar_todos_fornecedores(self):
+        return self.ler_tudo_fornecedores()

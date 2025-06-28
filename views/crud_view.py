@@ -14,9 +14,9 @@ from Abas.AbaFornecedores import JanelaFornecedores
 class CRUDView:
     def __init__(self, parent):
         self.parent = parent
-        self.create_crud_frame()
+        self.criar_crud_frame()
 
-    def create_crud_frame(self):
+    def criar_crud_frame(self):
         # Destroi frame antigo se existir
         if hasattr(self, 'crud_frame'):
             self.crud_frame.destroy()
@@ -72,9 +72,9 @@ class CRUDView:
 
 #         button_frame = ctk.CTkFrame(self.window)
 #         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
-#         ctk.CTkButton(button_frame, text="Criar", command=self.create_cliente).grid(row=0, column=0, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Criar", command=self.criar_cliente).grid(row=0, column=0, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_cliente).grid(row=0, column=1, padx=10, pady=5)
-#         ctk.CTkButton(button_frame, text="Excluir", command=self.delete_cliente).grid(row=0, column=2, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_cliente).grid(row=0, column=2, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
 #         columns = ("ID", "Nome", "Contato", "Rua", "Bairro", "Cidade", "Estado", "Telefone", "Email")
@@ -85,13 +85,13 @@ class CRUDView:
 #         self.tree.grid(row=6, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 #         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-#     def create_cliente(self):
+#     def criar_cliente(self):
 #         try:
 #             values = [e.get() for e in self.entries]
 #             if not values[0]:
 #                 messagebox.showerror("Erro", "Nome é obrigatório.")
 #                 return
-#             id_cliente = self.crud_obj.create_cliente(*values)
+#             id_cliente = self.crud_obj.criar_cliente(*values)
 #             self.recarregar_lista()
 #             self.campos_vazios()
 #             messagebox.showinfo("Sucesso", f"Cliente cadastrado com sucesso! ID: {id_cliente}")
@@ -114,14 +114,14 @@ class CRUDView:
 #         except Exception as e:
 #             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-#     def delete_cliente(self):
+#     def deletar_cliente(self):
 #         selected = self.tree.selection()
 #         if not selected:
 #             messagebox.showerror("Erro", "Selecione um cliente para excluir.")
 #             return
 #         item = self.tree.item(selected[0])
 #         id_cliente = item['values'][0]
-#         self.crud_obj.delete_cliente(id_cliente)
+#         self.crud_obj.deletar_cliente(id_cliente)
 #         self.recarregar_lista()
 #         self.campos_vazios()
 #         messagebox.showinfo("Sucesso", "Cliente excluído com sucesso!")
@@ -133,7 +133,7 @@ class CRUDView:
 #     def recarregar_lista(self):
 #         for row in self.tree.get_children():
 #             self.tree.delete(row)
-#         clientes = self.crud_obj.list_all_clientes()
+#         clientes = self.crud_obj.listar_todos_clientes()
 #         for cliente in clientes:
 #             self.tree.insert('', 'end', values=(
 #                 cliente['ID_Cliente'],
@@ -176,9 +176,9 @@ class CRUDView:
 
 #         button_frame = ctk.CTkFrame(self.window)
 #         button_frame.grid(row=6, column=0, columnspan=4, padx=20, pady=20)
-#         ctk.CTkButton(button_frame, text="Criar", command=self.create_funcionario).grid(row=0, column=0, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Criar", command=self.criar_funcionario).grid(row=0, column=0, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_funcionario).grid(row=0, column=1, padx=10, pady=5)
-#         ctk.CTkButton(button_frame, text="Excluir", command=self.delete_funcionario).grid(row=0, column=2, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_funcionario).grid(row=0, column=2, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
 #         columns = ("ID", "Nome", "Cargo", "Telefone", "Email", "Rua", "Bairro", "Cidade", "Estado")
@@ -189,13 +189,13 @@ class CRUDView:
 #         self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 #         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-#     def create_funcionario(self):
+#     def criar_funcionario(self):
 #         try:
 #             values = [e.get() for e in self.entries]
 #             if not values[0] or not values[1]:
 #                 messagebox.showerror("Erro", "Nome e Cargo são obrigatórios.")
 #                 return
-#             id_funcionario = self.crud_obj.create_funcionario(*values)
+#             id_funcionario = self.crud_obj.criar_funcionario(*values)
 #             self.recarregar_lista()
 #             self.campos_vazios()
 #             messagebox.showinfo("Sucesso", f"Funcionário cadastrado com sucesso! ID: {id_funcionario}")
@@ -218,14 +218,14 @@ class CRUDView:
 #         except Exception as e:
 #             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-#     def delete_funcionario(self):
+#     def deletar_funcionario(self):
 #         selected = self.tree.selection()
 #         if not selected:
 #             messagebox.showerror("Erro", "Selecione um funcionário para excluir.")
 #             return
 #         item = self.tree.item(selected[0])
 #         id_funcionario = item['values'][0]
-#         self.crud_obj.delete_funcionario(id_funcionario)
+#         self.crud_obj.deletar_funcionario(id_funcionario)
 #         self.recarregar_lista()
 #         self.campos_vazios()
 #         messagebox.showinfo("Sucesso", "Funcionário excluído com sucesso!")
@@ -237,7 +237,7 @@ class CRUDView:
 #     def recarregar_lista(self):
 #         for row in self.tree.get_children():
 #             self.tree.delete(row)
-#         funcionarios = self.crud_obj.list_all_funcionarios()
+#         funcionarios = self.crud_obj.listar_todos_funcionarios()
 #         for funcionario in funcionarios:
 #             self.tree.insert('', 'end', values=(
 #                 funcionario['ID_Funcionario'],
@@ -283,7 +283,7 @@ class CRUDView:
 #         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
 #         ctk.CTkButton(button_frame, text="Criar", command=self.criar_caminhao).grid(row=0, column=0, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_caminhao).grid(row=0, column=1, padx=10, pady=5)
-#         ctk.CTkButton(button_frame, text="Excluir", command=self.delete_caminhao).grid(row=0, column=2, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_caminhao).grid(row=0, column=2, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
 #         columns = ("ID", "Marca", "Modelo", "Ano", "Placa", "Quilometragem", "Status")
@@ -323,14 +323,14 @@ class CRUDView:
 #         except Exception as e:
 #             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-#     def delete_caminhao(self):
+#     def deletar_caminhao(self):
 #         selected = self.tree.selection()
 #         if not selected:
 #             messagebox.showerror("Erro", "Selecione um caminhão para excluir.")
 #             return
 #         item = self.tree.item(selected[0])
 #         id_caminhao = item['values'][0]
-#         self.crud_obj.delete_caminhao(id_caminhao)
+#         self.crud_obj.deletar_caminhao(id_caminhao)
 #         self.recarregar_lista()
 #         self.campos_vazios()
 #         messagebox.showinfo("Sucesso", "Caminhão excluído com sucesso!")
@@ -342,7 +342,7 @@ class CRUDView:
 #     def recarregar_lista(self):
 #         for row in self.tree.get_children():
 #             self.tree.delete(row)
-#         caminhoes = self.crud_obj.list_all_caminhoes()
+#         caminhoes = self.crud_obj.listar_todos_caminhoes()
 #         for caminhao in caminhoes:
 #             self.tree.insert('', 'end', values=(
 #                 caminhao['ID_Caminhao'],
@@ -384,9 +384,9 @@ class CRUDView:
 
 #         button_frame = ctk.CTkFrame(self.window)
 #         button_frame.grid(row=5, column=0, columnspan=4, padx=20, pady=20)
-#         ctk.CTkButton(button_frame, text="Criar", command=self.create_peca).grid(row=0, column=0, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Criar", command=self.criar_peca).grid(row=0, column=0, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_peca).grid(row=0, column=1, padx=10, pady=5)
-#         ctk.CTkButton(button_frame, text="Excluir", command=self.delete_peca).grid(row=0, column=2, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_peca).grid(row=0, column=2, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
 #         columns = ("ID", "Nome", "Descrição", "Fabricante", "Preço", "Quantidade")
@@ -397,13 +397,13 @@ class CRUDView:
 #         self.tree.grid(row=6, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 #         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-#     def create_peca(self):
+#     def criar_peca(self):
 #         try:
 #             values = [e.get() for e in self.entries]
 #             if not values[0] or not values[1]:
 #                 messagebox.showerror("Erro", "Nome e Descrição são obrigatórios.")
 #                 return
-#             id_peca = self.crud_obj.create_peca(*values)
+#             id_peca = self.crud_obj.criar_peca(*values)
 #             self.recarregar_lista()
 #             self.campos_vazios()
 #             messagebox.showinfo("Sucesso", f"Peça cadastrada com sucesso! ID: {id_peca}")
@@ -426,14 +426,14 @@ class CRUDView:
 #         except Exception as e:
 #             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-#     def delete_peca(self):
+#     def deletar_peca(self):
 #         selected = self.tree.selection()
 #         if not selected:
 #             messagebox.showerror("Erro", "Selecione uma peça para excluir.")
 #             return
 #         item = self.tree.item(selected[0])
 #         id_peca = item['values'][0]
-#         self.crud_obj.delete_peca(id_peca)
+#         self.crud_obj.deletar_peca(id_peca)
 #         self.recarregar_lista()
 #         self.campos_vazios()
 #         messagebox.showinfo("Sucesso", "Peça excluída com sucesso!")
@@ -445,7 +445,7 @@ class CRUDView:
 #     def recarregar_lista(self):
 #         for row in self.tree.get_children():
 #             self.tree.delete(row)
-#         pecas = self.crud_obj.list_all_pecas()
+#         pecas = self.crud_obj.listar_todos_pecas()
 #         for peca in pecas:
 #             self.tree.insert('', 'end', values=(
 #                 peca['ID_Peca'],
@@ -486,9 +486,9 @@ class CRUDView:
 
 #         button_frame = ctk.CTkFrame(self.window)
 #         button_frame.grid(row=6, column=0, columnspan=4, padx=20, pady=20)
-#         ctk.CTkButton(button_frame, text="Criar", command=self.create_fornecedor).grid(row=0, column=0, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Criar", command=self.criar_fornecedor).grid(row=0, column=0, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Atualizar", command=self.atualizar_fornecedor).grid(row=0, column=1, padx=10, pady=5)
-#         ctk.CTkButton(button_frame, text="Excluir", command=self.delete_fornecedor).grid(row=0, column=2, padx=10, pady=5)
+#         ctk.CTkButton(button_frame, text="Excluir", command=self.deletar_fornecedor).grid(row=0, column=2, padx=10, pady=5)
 #         ctk.CTkButton(button_frame, text="Limpar", command=self.campos_vazios).grid(row=0, column=3, padx=10, pady=5)
 
 #         columns = ("ID", "Nome", "Contato", "Rua", "Bairro", "Cidade", "Estado", "Telefone", "Email")
@@ -499,13 +499,13 @@ class CRUDView:
 #         self.tree.grid(row=7, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
 #         self.tree.bind("<<TreeviewSelect>>", self.on_select)
 
-#     def create_fornecedor(self):
+#     def criar_fornecedor(self):
 #         try:
 #             values = [e.get() for e in self.entries]
 #             if not values[0] or not values[1]:
 #                 messagebox.showerror("Erro", "Nome e Contato são obrigatórios.")
 #                 return
-#             id_fornecedor = self.crud_obj.create_fornecedor(*values)
+#             id_fornecedor = self.crud_obj.criar_fornecedor(*values)
 #             self.recarregar_lista()
 #             self.campos_vazios()
 #             messagebox.showinfo("Sucesso", f"Fornecedor cadastrado com sucesso! ID: {id_fornecedor}")
@@ -528,14 +528,14 @@ class CRUDView:
 #         except Exception as e:
 #             messagebox.showerror("Erro", f"Verifique os dados: {e}")
 
-#     def delete_fornecedor(self):
+#     def deletar_fornecedor(self):
 #         selected = self.tree.selection()
 #         if not selected:
 #             messagebox.showerror("Erro", "Selecione um fornecedor para excluir.")
 #             return
 #         item = self.tree.item(selected[0])
 #         id_fornecedor = item['values'][0]
-#         self.crud_obj.delete_fornecedor(id_fornecedor)
+#         self.crud_obj.deletar_fornecedor(id_fornecedor)
 #         self.recarregar_lista()
 #         self.campos_vazios()
 #         messagebox.showinfo("Sucesso", "Fornecedor excluído com sucesso!")
@@ -547,7 +547,7 @@ class CRUDView:
 #     def recarregar_lista(self):
 #         for row in self.tree.get_children():
 #             self.tree.delete(row)
-#         fornecedores = self.crud_obj.list_all_fornecedores()
+#         fornecedores = self.crud_obj.listar_todos_fornecedores()
 #         for fornecedor in fornecedores:
 #             self.tree.insert('', 'end', values=(
 #                 fornecedor['ID_Fornecedor'],
