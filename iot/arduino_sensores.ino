@@ -2,6 +2,15 @@
 // Este código lê sensores de presença/distância, luminosidade e temperatura
 // e envia os dados via Monitor Serial
 
+/*
+Atividade de:
+
+Antony Rafael - https://github.com/MyAntony
+Débora Magalhães - https://github.com/Debs2Dev
+Brunna Barreto - https://github.com/brunnabarreto
+Luís Felipe - https://github.com/IamLiper
+*/
+
 // Definição dos pinos
 const int SENSOR_DISTANCIA_TRIG = 2;
 const int SENSOR_DISTANCIA_ECHO = 3;

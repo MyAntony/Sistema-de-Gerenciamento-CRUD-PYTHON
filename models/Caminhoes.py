@@ -1,5 +1,13 @@
 import os
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class CaminhoesCRUD:
     def __init__(self, filename="caminhoes.txt"):
         self.filename = filename

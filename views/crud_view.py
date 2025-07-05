@@ -11,6 +11,14 @@ from Abas.AbaCaminhoes import JanelaCaminhoes
 from Abas.AbaPecas import JanelaPecas
 from Abas.AbaFornecedores import JanelaFornecedores
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class CRUDView:
     def __init__(self, parent):
         self.parent = parent

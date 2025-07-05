@@ -4,6 +4,14 @@ import threading
 import time
 from controllers.light_controller import LightController
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class LightView:
     def __init__(self, parent):
         self.parent = parent

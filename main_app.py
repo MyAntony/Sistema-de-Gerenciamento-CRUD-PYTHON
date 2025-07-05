@@ -5,6 +5,14 @@ from light_view import LightView
 from models.Caminhoes import CaminhoesCRUD
 from models.Clientes import ClientesCRUD
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class App(ctk.CTk):
     def __init__(self):
         super().__init__()

@@ -4,6 +4,14 @@ import threading
 import time
 from sensor_simulator import SensorSimulator
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class SensorView:
     def __init__(self, parent):
         self.parent = parent

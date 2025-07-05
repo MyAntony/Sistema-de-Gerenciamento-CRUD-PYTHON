@@ -3,6 +3,14 @@ import time
 from datetime import datetime
 import threading
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class SensorSimulator:
     def __init__(self):
         # Dados fictícios dos sensores

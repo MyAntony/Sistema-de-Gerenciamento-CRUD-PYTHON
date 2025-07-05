@@ -1,6 +1,14 @@
 import customtkinter as ctk
 from tkinter import messagebox, ttk
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class JanelaPecas:
     def __init__(self, parent, crud_obj):
         self.crud_obj = crud_obj

@@ -2,6 +2,14 @@ import customtkinter as ctk
 from tkinter import messagebox, ttk
 from models.Clientes import ClientesCRUD
 
+# Atividade de:
+
+# Antony Rafael - https://github.com/MyAntony
+# Débora Magalhães - https://github.com/Debs2Dev
+# Brunna Barreto - https://github.com/brunnabarreto
+# Luís Felipe - https://github.com/IamLiper
+
+
 class JanelaClientes:
     def __init__(self, parent, crud_obj=None):
         self.crud_obj = crud_obj or ClientesCRUD()

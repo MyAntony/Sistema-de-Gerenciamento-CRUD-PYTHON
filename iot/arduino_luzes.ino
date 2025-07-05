@@ -1,6 +1,15 @@
 // Código Arduino para Controle de Luzes - LogiTrack
 // Este código recebe comandos via Serial para controlar luzes de diferentes setores
 
+/*
+Atividade de:
+
+Antony Rafael - https://github.com/MyAntony
+Débora Magalhães - https://github.com/Debs2Dev
+Brunna Barreto - https://github.com/brunnabarreto
+Luís Felipe - https://github.com/IamLiper
+*/
+
 // Definição dos pinos para cada setor
 const int LED_OFICINA = 2;        // Pino para LED da oficina
 const int LED_GALPAO_1 = 3;       // Pino para LED do galpão bloco 1
